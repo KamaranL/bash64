@@ -9,14 +9,16 @@
 > encode (& decode) your shell scripts using base64
 
 - [Installation and Usage](#installation-and-usage)
-  - [Dependencies\[^1\]](#dependencies1)
+  - [Dependencies](#dependencies)
   - [Install](#install)
   - [Usage](#usage)
 - [Examples](#examples)
 
 ## Installation and Usage
 
-### Dependencies[^1]
+### Dependencies
+
+[^1]
 
 - base64
 - bash `>=3`
