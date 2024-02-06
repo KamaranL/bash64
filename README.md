@@ -8,6 +8,8 @@
 
 > encode (& decode) your shell scripts using base64
 
+[![latest release](https://badgen.net/github/release/KamaranL/bash64?icon=github)](https://github.com/KamaranL/bash64/releases/latest)
+
 - [Installation and Usage](#installation-and-usage)
   - [Dependencies](#dependencies)
   - [Install](#install)
@@ -64,7 +66,7 @@ usage: bash64 [options]
 options:
   -e <file>           encode the specified file
   -d <file>           decode the specified file
-  --no-{sha,timestamp}
+  --no-{sha,timestamp,credit}
                       omits the specified option when encoding
   -h,--help           print this help message
   -v,--version        print version
@@ -121,26 +123,26 @@ If we check the contents of the encoded script created by bash64, we see:
 <sub>***/usr/local/bin/hello***</sub>
 
 ```bash
-#!/bin/bash
-# 2024-01-30 06:13:18
-# e07db5c63556498c9147f618444619277ddf67d59bbb2dcbedd79329ffcf4315
-MAIN='IyEvdXNyL2Jpbi9lbnYgYmFzaAplY2hvIEhlbGxvICIkezE6LVdvcmxkfSIKZXhpdCAkPwo='
-__MAIN__="${0##*\/}" \
-/usr/bin/env bash <(base64 -d <<<"$MAIN") "$@"
-exit $?
+#!/bin/bash                                                                       1
+# e07db5c63556498c9147f618444619277ddf67d59bbb2dcbedd79329ffcf4315                2
+# 2024-01-30 06:13:18                                                             3
+# encoded with bash64 - https://github.com/KamaranL/bash64                        4
+MAIN='IyEvdXNyL2Jpbi9lbnYgYmFzaAplY2hvIEhlbGxvICIkezE6LVdvcmxkfSIKZXhpdCAkPwo=' # 5
+__MAIN__="${0##*\/}" \  #                                                         6
+    /usr/bin/env bash <(base64 -d <<<"$MAIN") "$@" #                              7
+exit $? #                                                                         8
 ```
 
 *Line-by-line analysis:*
 
-- the very first line contains the shebang `#!`.
-- the next line is the date and time the encoding occurred of the source file.
-- the next line is the SHA256 checksum of the *raw* source file.
-- **MAIN** stores a base64 encoded string that contains the contents of the source file.
-- **\_\_MAIN__** [^3] contains the name of the encoded script, and is defined immediately before executing the encoded string so that it can be passed to the context that the encoded string will run in.
-- the next line is really just a continuation of the previous line- because of the `\`. Here you will see the path to the interpreter that was provided in the first line of the source file, which is then taking in the base64 encoded string and then decoding it upon execution, while passing along all positional parameters.
-- the last line exits with the exit code of the previous line- where the base64 encoded string is being executed[^4]:.
-
-<!-- footnotes -->
+1. the shebang `#!`.
+1. the SHA256 checksum of the *raw* source file contents.
+1. the date and time the encoding occurred of the source file.
+1. the credit line that contains the name of the encoding script and its GitHub repository.
+1. **MAIN** stores a base64 encoded string that contains the contents of the source file.
+1. **\_\_MAIN__** [^3] contains the name of the encoded script, and is defined immediately before executing the encoded string so that it can be passed to the context that the encoded string will run in.
+1. a continuation of the previous line, because of the `\`. Here you will see the path to the interpreter that was provided in the first line of the source file, which is then taking in the base64 encoded string and then decoding it upon execution, while passing along all positional parameters.
+1. exits with the exit code of the previous line (where the base64 encoded string is being executed[^4]):.
 
 [^1]: Most, if not all, of the listed dependencies come pre-installed on MacOS and a good number of Linux distributions- provided for transparency.
 
