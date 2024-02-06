@@ -8,7 +8,7 @@
 
 > encode (& decode) your shell scripts using base64
 
-[![latest release](https://badgen.net/github/release/KamaranL/bash64?icon=github)](https://www.npmjs.com/package/js-stdlib-extensions)
+[![latest release](https://badgen.net/github/release/KamaranL/bash64?icon=github)](https://github.com/KamaranL/bash64/releases/latest)
 
 - [Installation and Usage](#installation-and-usage)
   - [Dependencies](#dependencies)
