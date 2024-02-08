@@ -26,38 +26,24 @@
 - bash `>=3`
 - cat
 - date
-- grep
-- head
+- perl `>=5`
 - realpath
 - sha256sum
 
 ### Install
 
-1. Clone repository:
+Copy + paste the following in your terminal to download, unpack, and link the [latest release](https://github.com/KamaranL/bash64/releases/latest):
 
    ```bash
-   git clone https://github.com/KamaranL/bash64.git
+   VER="$(curl -sL 'https://raw.githubusercontent.com/KamaranL/bash64/HEAD/VERSION.txt')" && {
+       DIR=/usr/local/etc/bash64.d
+       [ ! -d "$DIR" ] && mkdir -p "$DIR"
+       curl -L "https://github.com/KamaranL/bash64/releases/download/v$VER/bash64-v$VER.tgz" | tar -xz -C "$DIR"
+       chmod +x "$DIR/bash64"
+       ln -s "$DIR/bash64" /usr/local/bin/bash64
+       bash64 -v && bash64 -h
+   }
    ```
-
-1. Navigate to the newly downloaded repo and mark the script as executable[^2]:
-
-   ```bash
-   chmod +x bash64
-   ```
-
-1. Add to PATH <u>or</u> create a symbolic link: *(recommended)*
-
-   - Adding cloned repo to path:
-
-     ```bash
-     echo 'export PATH=$PATH:<absolute_path_to_cloned_repo>' >>~/.bash_profile
-     ```
-
-   - Creating a symbolic link:
-
-     ```bash
-     ln -s <absolute_path_to_cloned_repo>/bash64 /usr/local/bin/bash64
-     ```
 
 ### Usage
 
@@ -66,7 +52,7 @@ usage: bash64 [options]
 options:
   -e <file>           encode the specified file
   -d <file>           decode the specified file
-  --no-{sha,timestamp,credit}
+  --no-{sha,timestamp,credit,format}
                       omits the specified option when encoding
   -h,--help           print this help message
   -v,--version        print version
@@ -148,7 +134,7 @@ exit $? #                                                                       
 
 [^2]: Everyone has doubts, see [my wiki page](https://github.com/KamaranL/KamaranL/wiki#validation) on validation if you're like everyone.
 
-[^3]: This is implemented because after encoding the source file, the `$0` parameter in shell scripts do not decode correctly from standard input upon execution. For example, if we encoded the following source file:
+[^3]: This is implemented because after encoding the source file, the `$0` parameter, as well as the `$BASH_SOURCE` variable, in shell scripts do not decode correctly from standard input upon execution. For example, if we encoded the following source file:
 
     ```bash
     #!/bin/bash
@@ -162,5 +148,7 @@ exit $? #                                                                       
     $ whatami
     # The name of this script is whatami
     ```
+
+    Automatic formatting is already in place to substitute `$0` and `$BASH_SOURCE` for `$__MAIN__`, but if you would prefer to change these variables yourself, you can use the `--no-format` option and bash64 will print the lines that need remediation prior to encoding.
 
 [^4]: It's worth noting that *without* an exit code in the source file, the script *may* return false exit codes of 1 when executed.
