@@ -40,7 +40,7 @@ Copy + paste the following in your terminal to download, unpack, and link the [l
        [ ! -d "$DIR" ] && mkdir -p "$DIR"
        curl -L "https://github.com/KamaranL/bash64/releases/download/v$VER/bash64-v$VER.tgz" | tar -xz -C "$DIR"
        chmod +x "$DIR/bash64"
-       ln -s "$DIR/bash64" /usr/local/bin/bash64
+       [ ! -f "$DIR/bash64" ] && ln -s "$DIR/bash64" /usr/local/bin/bash64
        bash64 -v && bash64 -h
    }
    ```
