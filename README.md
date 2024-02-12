@@ -8,11 +8,13 @@
 
 > encode (& decode) your shell scripts using base64
 
-[![latest release](https://badgen.net/github/release/KamaranL/bash64?icon=github)](https://github.com/KamaranL/bash64/releases/latest)
+[![latest release](https://badgen.net/github/release/KamaranL/bash64?icon=github&cache=3600)](https://github.com/KamaranL/bash64/releases/latest)
 
 - [Installation and Usage](#installation-and-usage)
   - [Dependencies](#dependencies)
   - [Install](#install)
+    - [Local](#local)
+    - [GitHub Actions](#github-actions)
   - [Usage](#usage)
 - [Examples](#examples)
 
@@ -32,18 +34,32 @@
 
 ### Install
 
+#### Local
+
 Copy + paste the following in your terminal to download, unpack, and link the [latest release](https://github.com/KamaranL/bash64/releases/latest):
 
-   ```bash
-   VER="$(curl -sL 'https://raw.githubusercontent.com/KamaranL/bash64/HEAD/VERSION.txt')" && {
-       DIR=/usr/local/etc/bash64.d
-       [ ! -d "$DIR" ] && mkdir -p "$DIR"
-       curl -L "https://github.com/KamaranL/bash64/releases/download/v$VER/bash64-v$VER.tgz" | tar -xz -C "$DIR"
-       chmod +x "$DIR/bash64"
-       [ ! -f "$DIR/bash64" ] && ln -s "$DIR/bash64" /usr/local/bin/bash64
-       bash64 -v && bash64 -h
-   }
-   ```
+  ```bash
+  NAME=bash64 VER="$(curl -sL "https://raw.githubusercontent.com/KamaranL/$NAME/main/VERSION.txt")" && {
+     DIR="/usr/local/etc/$NAME.d"
+     [ ! -d "$DIR" ] && mkdir -p "$DIR"
+     curl -L "https://github.com/KamaranL/$NAME/releases/download/v$VER/$NAME-v$VER.tgz" | tar -vxz -C "$DIR"
+     chmod +x "$DIR/$NAME"
+     [ ! -f "/usr/local/bin/$NAME" ] && ln -s "$DIR/$NAME" "/usr/local/bin/$NAME"
+     "$NAME" -v && "$NAME" -h
+  }
+  ```
+
+#### GitHub Actions
+
+  ```yml
+  #...
+  jobs:
+    ci:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: KamaranL/bash64@main
+  #...
+  ```
 
 ### Usage
 

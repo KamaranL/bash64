@@ -1,0 +1,42 @@
+name: 'bash64-setup'
+description: 'installs bash64 for use in the current workflow job'
+author: 'Kamaran Layne'
+branding:
+  icon: 'command'
+  color: 'gray-dark'
+inputs:
+  version:
+    description: |
+      Version to install.
+      Default: 'latest'
+    default: latest
+    required: false
+runs:
+  using: composite
+  steps:
+    - run: |
+        # setup
+        [ "$VERSION" == latest ] && {
+            VERSION="$(curl -sL "https://raw.githubusercontent.com/$ACTION_REPOSITORY/main/VERSION.txt")"
+            echo "::debug::Using latest version: $VERSION"
+        }
+        RELEASE_URL="https://github.com/$ACTION_REPOSITORY/releases/download/v$VERSION/${ACTION_REPOSITORY##*\/}-v$VERSION.tgz"
+        STATUS_CODE="$(curl -sI -o /dev/null -w "%{http_code}" -L "$RELEASE_URL")" &&
+            ((STATUS_CODE != 200)) && {
+            echo "::error::($STATUS_CODE) Specified version unavailable: v$VERSION"
+            exit 1
+        }
+
+        [ ! -d "$ACTION_REPOSITORY" ] && mkdir -p "$ACTION_REPOSITORY"
+        pushd "$ACTION_REPOSITORY" >/dev/null 2>&1
+        echo "::debug::Downloading packaged release: $RELEASE_URL"
+        curl -sL "$RELEASE_URL" | tar -xz -C .
+        chmod +x "${ACTION_REPOSITORY##*\/}"
+        echo "::debug::Appending to path: $PWD"
+        echo "$PWD" >>"$GITHUB_PATH"
+        popd >/dev/null 2>&1
+      shell: bash
+      working-directory: ${{ runner.temp }}
+      env:
+        ACTION_REPOSITORY: ${{ github.action_repository }}
+        VERSION: ${{ inputs.version }}
