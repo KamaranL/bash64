@@ -17,6 +17,7 @@
     - [GitHub Actions](#github-actions)
   - [Usage](#usage)
 - [Examples](#examples)
+- [Validity](#validity)
 
 ## Installation and Usage
 
@@ -142,15 +143,17 @@ exit $? #                                                                       
 1. the date and time the encoding occurred of the source file.
 1. the credit line that contains the name of the encoding script and its GitHub repository.
 1. **MAIN** stores a base64 encoded string that contains the contents of the source file.
-1. **\_\_MAIN__** [^3] contains the name of the encoded script, and is defined immediately before executing the encoded string so that it can be passed to the context that the encoded string will run in.
+1. **\_\_MAIN__** [^2] contains the name of the encoded script, and is defined immediately before executing the encoded string so that it can be passed to the context that the encoded string will run in.
 1. a continuation of the previous line, because of the `\`. Here you will see the path to the interpreter that was provided in the first line of the source file, which is then taking in the base64 encoded string and then decoding it upon execution, while passing along all positional parameters.
-1. exits with the exit code of the previous line (where the base64 encoded string is being executed[^4]):.
+1. exits with the exit code of the previous line (where the base64 encoded string is being executed[^3]):.
+
+## Validity
+
+Everyone has doubts, see [my wiki page](https://github.com/KamaranL/KamaranL/wiki#validation) on validation if you're like everyone :smile:
 
 [^1]: Most, if not all, of the listed dependencies come pre-installed on MacOS and a good number of Linux distributions- provided for transparency.
 
-[^2]: Everyone has doubts, see [my wiki page](https://github.com/KamaranL/KamaranL/wiki#validation) on validation if you're like everyone.
-
-[^3]: This is implemented because after encoding the source file, the `$0` parameter, as well as the `$BASH_SOURCE` variable, in shell scripts do not decode correctly from standard input upon execution. For example, if we encoded the following source file:
+[^2]: This is implemented because after encoding the source file, the `$0` parameter, as well as the `$BASH_SOURCE` variable, in shell scripts do not decode correctly from standard input upon execution. For example, if we encoded the following source file:
 
     ```bash
     #!/bin/bash
@@ -167,4 +170,4 @@ exit $? #                                                                       
 
     Automatic formatting is already in place to substitute `$0` and `$BASH_SOURCE` for `$__MAIN__`, but if you would prefer to change these variables yourself, you can use the `--no-format` option and bash64 will print the lines that need remediation prior to encoding.
 
-[^4]: It's worth noting that *without* an exit code in the source file, the script *may* return false exit codes of 1 when executed.
+[^3]: It's worth noting that *without* an exit code in the source file, the script *may* return false exit codes of 1 when executed.
