@@ -1,5 +1,7 @@
 $RECYCLE.BIN/
+*.bin
 *.cab
+*.env
 *.icloud
 *.lnk
 *.msi
@@ -7,7 +9,6 @@ $RECYCLE.BIN/
 *.msm
 *.msp
 *.stackdump
-*.tmp
 *~
 .AppleDB
 .AppleDesktop
@@ -35,9 +36,6 @@ Temporary Items
 Thumbs.db
 Thumbs.db:encryptable
 [Dd]esktop.ini
-__test__/
-bash64.sh
-dist/
-distribute.sh
 ehthumbs.db
 ehthumbs_vista.db
+src
