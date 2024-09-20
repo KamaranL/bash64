@@ -1,0 +1,17 @@
+{
+  "image": "docker.io/library/bash:5",
+  "overrideCommand": true,
+  "onCreateCommand": [
+    "/bin/sh",
+    "/workspaces/bash64/.devcontainer/on_create.0.sh"
+  ],
+  "containerEnv": {
+    "GIT_CONFIG_GLOBAL": "/root/.config/git/conf/main.conf",
+    "GIT_CONFIG_NOSYSTEM": "true",
+    "TZ": "America/New_York"
+  },
+  "mounts": [
+    "source=${localEnv:HOME}/.config/git,target=/root/.config/git,readonly,type=bind",
+    "source=${localEnv:HOME}/.ssh,target=/root/.ssh,type=bind"
+  ]
+}
