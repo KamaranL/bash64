@@ -3,7 +3,7 @@
   "overrideCommand": true,
   "onCreateCommand": [
     "/bin/sh",
-    "/workspaces/bash64/.devcontainer/on_create.0.sh"
+    "/workspaces/bash64/.devcontainer/on_create.sh"
   ],
   "containerEnv": {
     "GIT_CONFIG_GLOBAL": "/root/.config/git/conf/main.conf",
